@@ -6,10 +6,16 @@ from prometheus_client import start_http_server, Gauge
 from typing import Dict, Any
 
 # Configure logging
+import os
+
+# Create log directory if it doesn't exist
+log_dir = "/opt/speed_test/speedtest-monitor/logs"
+os.makedirs(log_dir, exist_ok=True)
+
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
-    filename='speedtest.log'
+    filename=os.path.join(log_dir, "speedtest.log")
 )
 
 # Define Prometheus metrics
@@ -64,7 +70,7 @@ class SpeedTestMonitor:
 def main():
     # Configuration
     PROMETHEUS_PORT = 9516  # Port for speedtest metrics
-    TEST_INTERVAL = 600   # Run test every hour (in seconds)
+    TEST_INTERVAL = 3600   # Run test every hour (in seconds)
     
     # Start Prometheus HTTP server
     start_http_server(PROMETHEUS_PORT)
